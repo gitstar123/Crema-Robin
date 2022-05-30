@@ -1,30 +1,43 @@
 import Meal from '../../../assets/images/vegThali.jpg'
 import {View, SafeAreaView, Image, Text, StyleSheet} from 'react-native';
 import CustomButton from '../../components/CustomButton/CustomButton';
-const BuyScreen = ({navigation, route}) => {
-const {item, id} = route.params;
+import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-  const onBuy = () => {
-    // navigation.navigate('Payment');
-    var SignUPAPI = "http://192.168.0.103/CremaCafe/order.php";
-        var headers ={
-            'Accept':'application/json',
-            'Content-Type':'application.json'
-        };
-    
-    var Data={
-        sid:id,
-        food:item.name
-    };
+  const BuyScreen = ({route}) => {
+    // console.log(route.params)
+    const itemABC = route.params.item;
+    const [userID,setID] = useState("")
+    getDataId = () => {
+      try {
+        AsyncStorage.getItem('userID',(err,item) => {
+            if (item != "") {
+                setID(item);
+            }
+        });
+    } catch (error) {
+        console.log("Error retrieving data" + error);
+    }
+    }
+    getDataId();
+    const onBuy = () => {
+      
+      console.log(userID);
+      fetch("https://nodecrema.herokuapp.com/insertorder",{
+          method : 'POST',
+          headers : {
+              Accept : 'application/json',
+              'Content-Type' : 'application/json'
+          },
 
-    fetch(SignUPAPI,
-        {
-            method:'POST',
-            headers:headers,
-            body:JSON.stringify(Data)
-        }
-        )
-        //.then((response)=>response.json())
+          mode: 'no-cors',
+          body : JSON.stringify({
+              userID : userID,
+              name : itemABC.name
+
+          })
+      })
+        .then((response)=>response.json())
         .then((response)=>
             {
                 // var id = response[0].id;
@@ -35,12 +48,8 @@ const {item, id} = route.params;
                 // navigation.navigate('Home');
             }
         )
-        .catch((error)=>{alert("Error"+error)});
-
-
-
-
-  }
+      }     
+        
   return (
     <SafeAreaView
       style={{
@@ -69,7 +78,7 @@ const {item, id} = route.params;
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <Text style={{fontSize: 22, fontWeight: 'bold'}}>{item.name}</Text>
+          <Text style={{fontSize: 22, fontWeight: 'bold'}}>{itemABC.name}</Text>
           <View style={style.priceTag}>
             <Text
               style={{
@@ -78,12 +87,12 @@ const {item, id} = route.params;
                 fontWeight: 'bold',
                 fontSize: 16,
               }}>
-              {item.price}
+              {itemABC.price}
             </Text>
           </View>
         </View>
         <View style={{paddingHorizontal: 20, marginTop: 10}}>
-          <Text style={{fontSize: 20, fontWeight: 'bold'}}>{item.about}</Text>
+          <Text style={{fontSize: 20, fontWeight: 'bold'}}>{itemABC.about}</Text>
           <Text
             style={{
               color: 'grey',

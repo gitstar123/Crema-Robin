@@ -15,33 +15,18 @@ const Test = () => {
     const [passwordRepeat, setPasswordRepeat] = useState('');
 
     const onSignUpPress = () => {
-        var SignUPAPI = "https://nodecrema.herokuapp.com/api";
-        var headers ={
-            'Accept':'application/json',
-            'Content-Type':'application.json'
-        };
-
-        var Data={
-            name:name
-        };
-        console.log(JSON.stringify(Data))
-        fetch(SignUPAPI,
-            {
-                method:'POST',
-                headers:headers,
-                body:JSON.stringify({name:"Robin"})
-               
-            }
-            )
-            
-            // .then((response)=>response.json())
-            .then((response)=>
-                {
-                    // navigation.navigate('SignIn');
-                    alert(response[0].Message);
-                }
-            )
-            .catch((error)=>{alert("Error"+error)});
+        var SignUPAPI = "https://nodecrema.herokuapp.com/insertorder";
+        fetch(SignUPAPI,{
+            method : 'POST',
+            headers : {
+                Accept : 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            mode: 'no-cors',
+            body : JSON.stringify({
+                name : name
+            })
+        }).done();
     }
     
     const {control, handleSubmit, watch} = useForm();

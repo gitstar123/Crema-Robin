@@ -15,34 +15,25 @@ const SignUpScreen = () => {
     const [passwordRepeat, setPasswordRepeat] = useState('');
 
     const onSignUpPress = () => {
-        var SignUPAPI = "http://192.168.0.103/CremaCafe/server.php";
-        var headers ={
-            'Accept':'application/json',
-            'Content-Type':'application.json'
-        };
+        fetch("https://nodecrema.herokuapp.com/insertuser",{
+            method : 'POST',
+            headers : {
+                Accept : 'application/json',
+                'Content-Type' : 'application/json'
+            },
 
-        var Data={
-            name:name,
-            email:email,
-            password:password
-        };
-        fetch(SignUPAPI,
-            {
-                method:'POST',
-                headers:headers,
-                body:JSON.stringify(Data)
-            }
-            )
-            // .then((response)=>response.json())
-            .then((response)=>
-                {
-                    navigation.navigate('SignIn');
-                    // alert(response[0].Message);
-                }
-            )
-            .catch((error)=>{alert("Error"+error)});
+            mode: 'no-cors',
+            body : JSON.stringify({
+                name : name,
+                email : email,
+                password : password
+
+            })
+        }).then(()=>{
+            navigation.navigate("SignIn");
+            
+        })
     }
-    
     const {control, handleSubmit, watch} = useForm();
     const navigation = useNavigation();
 

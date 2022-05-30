@@ -8,70 +8,46 @@ import CustomButton from "../../components/CustomButton/CustomButton";
 const MyOrders = () => {
 
     const [dataList, setDataList] = useState();
-    const OnButtonViewPress = (data) => {
-        var SignUPAPI = "http://192.168.0.103/CremaCafe/allorders.php";
-        var headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application.json'
-        };
 
+    const h = async () => {
+        console.log ("1")
+    }
+    componentDidMount = () => {
+        setInterval(h, 1000);
+    }
+    
+    const OnButtonViewPress = async () => {
+        fetch("https://nodecrema.herokuapp.com/checkallorders",{
+            method : 'POST',
+            headers : {
+                Accept : 'application/json',
+                'Content-Type' : 'application/json'
+            },
 
-        var Data = {
-        };
-
-        fetch(SignUPAPI,
-            {
-                method: 'POST',
-                headers: headers,
-                body: JSON.stringify(Data)
-            }
-        )
+            mode: 'no-cors',
+            body : JSON.stringify()
+        })
             .then((response) => response.json())
             .then((response) => {
                 setDataList(response);
 
-                // response[0].Message == "1" ? navigation.navigate('Home',{id}) : alert("Incorrect Email or password");
-            }
-            )
-            .catch((error) => { alert("Error" + error) });
-
+           }
+            );
     }
 
     const renderItem = ({ item, index }) => {
         const OnRemoveOrderPress = () => {
-            var SignUPAPI = "http://192.168.0.103/CremaCafe/delete.php";
-            var headers = {
-                'Accept': 'application/json',
-                'Content-Type': 'application.json'
-            };
-
-            var Data = {
-                id:item.id
-            };
-            fetch(SignUPAPI,
-                {
-                    method: 'POST',
-                    headers: headers,
-                    body: JSON.stringify(Data)
-                }
-            )
-                // .then((response)=>response.json())
-                // .then((response) => {
-                //     navigation.navigate('SignIn');
-                //     // alert(response[0].Message);
-                // }
-                // )
-                // .catch((error) => { alert("Error" + error) });
+           
         }
     
     return (
 
         <View key={index} style={styles.itemContainer}>
             <View style={styles.itemBody}>
-                <Text style={styles.itemName}>{item.food}</Text>
+                <Text style={styles.itemName}>{item.Name}</Text>
             </View>
             <View style={styles.itemBody}>
-                <Text style={styles.itemName}>{item.name}</Text>
+                <Text style={styles.itemName}>{item.ID}</Text>
             </View>
             <View style={styles.itemStatus}>
                 <Text>{item.id}</Text>

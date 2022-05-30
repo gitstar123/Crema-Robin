@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Thali from '../../../assets/images/vegThali.jpg'
 import Food2 from '../../../assets/images/Food2.jpg'
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const listTab = [
     {
         status: 'Patty'
@@ -91,23 +92,27 @@ const data = [
 ]
 
 
-const HomeScreen = ({route}) => {
+const HomeScreen = () => {
     const [status, setStatus] = useState('Thali');
     const [dataList, setDataList] = useState(data);
-    const {id} = route.params;
+    
     const SetStatusFilter = status => {
         setDataList([...data.filter(e => e.status === status)])
         setStatus(status)
     }
     const onMyOrdersPress = () => {
-        navigation.navigate('MyOrders', {id});
+        navigation.navigate('MyOrders');
+    }
+    const onLogOutPress = () => {
+        AsyncStorage.setItem("login","false");
+        navigation.navigate("SignIn");
     }
     const navigation = useNavigation();
     const renderItem = ({item, index}) => {
         return (
             <TouchableOpacity
                 onPress={() => (
-                navigation.navigate('BuyScreen', {item,id}))
+                navigation.navigate('BuyScreen', {item}))
                 }
                 >
                 <View key = {index} style = {styles.itemContainer}>
@@ -164,6 +169,11 @@ const HomeScreen = ({route}) => {
             />
             <View style={styles.bottombutton}>
                     <Button
+                        title="LogOut"
+                        class= "BTN"
+                        onPress={onLogOutPress}
+                    />
+                    <Button
                         title="View Orders"
                         onPress={onMyOrdersPress}
                     />
@@ -178,7 +188,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center'
     },
-
+    BTN :{
+        margin: 12,
+    },
     bottombutton: {
         right: 10,
         left: 10,

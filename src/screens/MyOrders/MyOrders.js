@@ -2,52 +2,58 @@ import { Text, StyleSheet, View, Dimensions, FlatList, Image,Button, SafeAreaVie
 import { useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from "../../components/CustomButton/CustomButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
-const MyOrders = ({route}) => {
+const MyOrders = () => {
 
     const [dataList, setDataList] = useState();
-    const {id} = route.params;
+    const [userID,setid] = useState("")
+    getDataId = async () => {
+      try {
+          setid (await AsyncStorage.getItem('userID'))
+      } catch (e){
+          console.log(e)
+      }
+    }
+    getDataId();
     const OnButtonViewPress = (data) =>{
-    var SignUPAPI = "http://192.168.0.103/CremaCafe/myorders.php";
-        var headers ={
-            'Accept':'application/json',
-            'Content-Type':'application.json'
-    };
+        
+        fetch("https://nodecrema.herokuapp.com/checkorders",{
+            method : 'POST',
+            headers : {
+                Accept : 'application/json',
+                'Content-Type' : 'application/json'
+            },
 
-    var Data={
-        sid:id
-    };
-   
-    fetch(SignUPAPI,
-        {
-            method:'POST',
-            headers:headers,
-            body:JSON.stringify(Data)
-        }
-        )
+            mode: 'no-cors',
+            body : JSON.stringify({
+                userID : userID
+
+            })
+        })
         .then((response)=>response.json())
         .then((response)=>
             {
+                console.log(response)
                 setDataList(response);
                 
                 // response[0].Message == "1" ? navigation.navigate('Home',{id}) : alert("Incorrect Email or password");
             }
-        )
-        .catch((error)=>{alert("Error"+error)});
+        );
 
-        }
+    }
 
         const renderItem = ({item, index}) => {
             return (
             
                     <View key = {index} style = {styles.itemContainer}>
                         <View style = {styles.itemBody}>
-                            <Text style = {styles.itemName}>{item.food}</Text>
+                            <Text style = {styles.itemName}>{item.Name}</Text>
                         </View>
                         <View style = {styles.itemStatus}>
-                            <Text>{item.id}</Text>
+                            <Text>{item.ID}</Text>
                         </View>
                     </View>
             )
@@ -58,8 +64,9 @@ const MyOrders = ({route}) => {
             <View style = {{height : 1, backgroundColor : '#f1f1f1'}}/>
         )
     }
-
+    console.log(dataList);
     return (
+        
         <SafeAreaView>
             <View>
                 <CustomButton onPress={OnButtonViewPress} text='Refresh' type='primary'/>

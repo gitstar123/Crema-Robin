@@ -10,35 +10,27 @@ const AdminLogin = () => {
     const navigation = useNavigation();
     const onAdminSubmit = () => {
 
-        var SignUPAPI = "http://192.168.0.103/CremaCafe/adminlogin.php";
-        var headers ={
-            'Accept':'application/json',
-            'Content-Type':'application.json'
-        };
+        fetch("https://nodecrema.herokuapp.com/checkadmin",{
+            method : 'POST',
+            headers : {
+                Accept : 'application/json',
+                'Content-Type' : 'application/json'
+            },
 
-        var Data={
-            email:email,
-            password:password
-        };
+            mode: 'no-cors',
+            body : JSON.stringify({
+                email : email,
+                password : password
 
-        fetch(SignUPAPI,
-            {
-                method:'POST',
-                headers:headers,
-                body:JSON.stringify(Data)
-            }
-            )
+            })
+        })
             .then((response)=>response.json())
             .then((response)=>
                 {
-                    var id = response[0].id;
-                     response[0].Message == "1" ? navigation.navigate('AdminPortal') : alert("Incorrect Email or password");
+                    console.log(response);
+                    response == 1 ? navigation.navigate('AdminPortal') : alert("Incorrect Email or password");
                 }
-            )
-            .catch((error)=>{alert("Error"+error)});
-
-        
-
+            );
     }
     const [password, setPassword] = useState('');
     const [email, setEmailId] = useState('');

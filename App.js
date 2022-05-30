@@ -1,13 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component , useState} from 'react';
 import { StyleSheet, View} from 'react-native';
 import Navigation from './src/components/Navigation/Navigation';
 import Test from './src/screens/Test/Test';
+
+
 export default class App extends Component {
+
+  
+  
+
    render() {
      return (
        <View style={styles.container}>
-        {/* <Navigation/> */}
-        <Test/>
+        <Navigation/>
+        {/* <Test/> */}
        </View>
      );
    }

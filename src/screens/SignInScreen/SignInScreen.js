@@ -7,40 +7,75 @@ import CustomButton from '../../components/CustomButton/CustomButton';
 import SocialSignInButtons from '../../components/SocialSignInButtons/SocialSignInButtons';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 const SignInScreen = () => {
+    const navigation = useNavigation();
+    const [value,setvalue] = useState("")
+    const [userID,setid] = useState("")
+    getData = async () => {
+        try {
+            setvalue (await AsyncStorage.getItem('login'))
+
+        } catch (e){
+            console.log(e)
+        }
+    }
+    getDataId = async () => {
+        try {
+            setid (await AsyncStorage.getItem('userID'))
+        } catch (e){
+            console.log(e)
+        }
+    }
+
+    // AsyncStorage.setItem("login","false")
+    getData()
+    getDataId()
+    console.log("1",value)
+    console.log("2",userID)
+    if (value === "null" || value == "false"){
+        AsyncStorage.setItem("login","false")
+    } else {
+        if (value == "true") {
+            navigation.navigate("Home")
+        }
+    }
     const {height} = useWindowDimensions();
     const {control, handleSubmit, formState: {errors}} = useForm();
     const [password, setPassword] = useState('');
     const [email, setEmailId] = useState('');
-    const navigation = useNavigation();
+    
     const onButttonPress = () => {
         navigation.navigate('MyOrders');
     }
     const onSignInPress = () =>{
         //Validate the User
-        var SignUPAPI = "http://192.168.0.103/CremaCafe/logincheck.php";
-        var headers ={
-            'Accept':'application/json',
-            'Content-Type':'application.json'
-        };
-
-        var Data={
-            email:email,
-            password:password
-        };
-
-        fetch(SignUPAPI,
-            {
-                method:'POST',
-                headers:headers,
-                body:JSON.stringify(Data)
-            }
-            )
+        var SignUPAPI = "https://nodecrema.herokuapp.com/checklogin";
+        fetch(SignUPAPI,{
+            method : 'POST',
+            headers : {
+                Accept : 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            mode: 'no-cors',
+            body : JSON.stringify({
+                email : email,
+                password:password
+            })
+        })
             .then((response)=>response.json())
             .then((response)=>
-                {
-                    var id = response[0].id;
-                     response[0].Message == "1" ? navigation.navigate('Home',{id}) : alert("Incorrect Email or password");
+                {   console.log(response);
+                    if (response[0] == "1") {
+                        navigation.navigate('Home');
+                        AsyncStorage.setItem("login","true")
+                        AsyncStorage.setItem("userID",response[1])
+
+                    }
+                     else { alert("Incorrect Email or password");
+                    }
                 }
             )
             .catch((error)=>{alert("Error"+error)});
@@ -56,6 +91,7 @@ const SignInScreen = () => {
     const onAdminLogin = () => {
         navigation.navigate('AdminLogin');
     }
+    
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <Image source = {Food1} style = {styles.backgroundImage} />
@@ -122,6 +158,7 @@ const SignInScreen = () => {
                 <CustomButton onPress={onAdminLogin} text="ADMIN Login" type='tertiary'/>
             </View>
         </ScrollView>
+            
     )
 }
 

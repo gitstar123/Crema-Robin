@@ -10,14 +10,15 @@ import BuyScreen from '../../screens/BuyScreen/BuyScreen';
 import MyOrders from '../../screens/MyOrders/MyOrders';
 import AdminLogin from '../../screens/AdminLogin/AdminLogin';
 import AdminPortal from '../../screens/AdminPortal/AdminPortal';
-
 const Stack = createNativeStackNavigator();
 
-const Navigation = () => {
+
+const Navigation = (props) => {
     return(
         <>
         <NavigationContainer>
             <Stack.Navigator screenOptions={{headerShown: false}}>
+                
                 <Stack.Screen name="SignIn" component={SignInScreen} />
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
                 <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />

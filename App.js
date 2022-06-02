@@ -4,6 +4,7 @@ import Navigation from './src/components/Navigation/Navigation';
 import Test from './src/screens/Test/Test';
 
 
+
 export default class App extends Component {
 
   
@@ -22,7 +23,6 @@ export default class App extends Component {
 const styles = StyleSheet.create({
    container: {
     flex: 1,
-    padding: 20,
     backgroundColor: "#F9FBFC"
    },
 });

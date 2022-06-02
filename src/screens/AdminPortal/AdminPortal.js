@@ -2,6 +2,7 @@ import { Text, StyleSheet, View, Dimensions, FlatList, Image, Button, SafeAreaVi
 import { useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from "../../components/CustomButton/CustomButton";
+import { useEffect } from "react";
 
 
 
@@ -9,14 +10,9 @@ const MyOrders = () => {
 
     const [dataList, setDataList] = useState();
 
-    const h = async () => {
-        console.log ("1")
-    }
-    componentDidMount = () => {
-        setInterval(h, 1000);
-    }
     
-    const OnButtonViewPress = async () => {
+    
+    useEffect(async () => {
         fetch("https://nodecrema.herokuapp.com/checkallorders",{
             method : 'POST',
             headers : {
@@ -33,7 +29,7 @@ const MyOrders = () => {
 
            }
             );
-    }
+    })
 
     const renderItem = ({ item, index }) => {
         const OnRemoveOrderPress = () => {
@@ -65,9 +61,9 @@ const separator = () => {
 
 return (
     <SafeAreaView>
-        <View>
+        {/* <View>
             <CustomButton onPress={OnButtonViewPress} text='Refresh' type='primary' />
-        </View>
+        </View> */}
         <FlatList
             data={dataList}
             keyExtractor={(e, i) => i.toString()}

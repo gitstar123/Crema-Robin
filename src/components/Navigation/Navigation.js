@@ -10,15 +10,17 @@ import BuyScreen from '../../screens/BuyScreen/BuyScreen';
 import MyOrders from '../../screens/MyOrders/MyOrders';
 import AdminLogin from '../../screens/AdminLogin/AdminLogin';
 import AdminPortal from '../../screens/AdminPortal/AdminPortal';
+import Profile from '../../screens/Profile/profile';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MainContainer from './TabNav';
+import CartScreen from '../../screens/CartScreen/CartScreen';
 const Stack = createNativeStackNavigator();
-
-
 const Navigation = (props) => {
     return(
         <>
-        <NavigationContainer>
+        <NavigationContainer  independent = {true}>
             <Stack.Navigator screenOptions={{headerShown: false}}>
-                
+                <Stack.Screen name="TabNav" component={MainContainer} />
                 <Stack.Screen name="SignIn" component={SignInScreen} />
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
                 <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
@@ -29,6 +31,8 @@ const Navigation = (props) => {
                 <Stack.Screen name="MyOrders" component={MyOrders} />
                 <Stack.Screen name="AdminLogin" component={AdminLogin} />
                 <Stack.Screen name="AdminPortal" component={AdminPortal} />
+                <Stack.Screen name="Profile" component={Profile} />
+                <Stack.Screen name="Cart" component={CartScreen} />
                 {/* <Stack.Screen name="Payment" component={Payment} /> */}
             </Stack.Navigator>
         </NavigationContainer>

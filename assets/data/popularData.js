@@ -2,7 +2,7 @@ const popularData = [
   {
     id: '1',
     image: require('../images/pizza1.png'),
-    title: 'Primavera Pizza',
+    title: 'Snacks',
     weight: '540 gr',
     rating: '5.0',
     price: 3.99,
@@ -10,6 +10,7 @@ const popularData = [
     sizeNumber: 14,
     crust: 'Thin Crust',
     deliveryTime: 30,
+    value: 0,
     ingredients: [
       {
         id: '1',
@@ -36,7 +37,7 @@ const popularData = [
   {
     id: '2',
     image: require('../images/pizza2.png'),
-    title: 'Vegetarian Pizza',
+    title: 'Lunch',
     weight: '450 gr',
     rating: '4.0',
     price: 5.99,
@@ -44,6 +45,7 @@ const popularData = [
     sizeNumber: 10,
     crust: 'Thick Crust',
     deliveryTime: 40,
+    value: 0,
     ingredients: [
       {
         id: '1',
@@ -60,7 +62,7 @@ const popularData = [
   {
     id: '3',
     image: require('../images/pizza3.png'),
-    title: 'Pepperoni Pizza',
+    title: 'Drinks',
     weight: '700 gr',
     rating: '5.0',
     price: 9.99,
@@ -68,6 +70,7 @@ const popularData = [
     sizeNumber: 18,
     crust: 'Thin Crust',
     deliveryTime: 20,
+    value: 0,
     ingredients: [
       {
         id: '1',

@@ -69,7 +69,7 @@ const SignInScreen = () => {
             .then((response)=>
                 {   console.log(response);
                     if (response[0] == "1") {
-                        navigation.navigate('Home');
+                        navigation.navigate('TabNav');
                         AsyncStorage.setItem("login","true")
                         AsyncStorage.setItem("userID",response[1])
 

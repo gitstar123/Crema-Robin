@@ -75,25 +75,27 @@ const HomeScreen = () => {
   const [dataList, setDataList] = useState([
     ...allDataList.filter((e) => e.title === "Snacks"),
   ]);
-  const [cartItems, setCartItems] = useState([]);
+  // const [cartItems, setCartItems] = useState([]);
 
   const [renderid, setId] = useState("1");
 
+
   const setNewDataList = (title) => {
-    setDataList([...popularData.filter((e) => e.title === title)]);
+    // setAllDataList([...allDataList.filter((e) => e.title === title)]);
     setStatus(title);
+    // setAllDataList(...allDataList.filter((e) => e.title === "Snacks"),)
   };
 
   const Tab = createBottomTabNavigator();
 
   const navigation = useNavigation();
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item}) => {
     return (
       <View>
         <TouchableOpacity
           onPress={() => navigation.navigate("BuyScreen", { item })}
         >
-          <View key={index} style={styles.itemContainer}>
+          <View key={item.key} style={styles.itemContainer}>
             <View style={styles.itemLogo}>
               <Image style={styles.itemImage} source={Thali} />
             </View>
@@ -117,55 +119,49 @@ const HomeScreen = () => {
   const [val, setVal] = useState(0);
   const onAddPress = (item) => {
     // setAllDataList(allDataList.map((x) => x.id === item.id?  {...ob,value: ob.value++} : x));
-    for (const i in allDataList) {
-      if (allDataList[i] == item) {
-        allDataList[i].value++;
+    const abc = [...allDataList];
+    for (const i in abc) {
+      if (abc[i] == item) {
+        abc[i].value++;
         break;
       }
     }
-    setAllDataList(allDataList);
-    // item.value++;
-
-    AsyncStorage.setItem("cart",JSON.stringify(cartItems.push(item)))
+    setAllDataList(abc);
+    AsyncStorage.setItem(
+      "cart", JSON.stringify(allDataList)
+    );
+    console.log(allDataList)
+    
   };
   const onPlusPress = (item) => {
-    for (const i in allDataList) {
-      if (allDataList[i] == item) {
-        allDataList[i].value++;
+    const abc = [...allDataList];
+    for (const i in abc) {
+      if (abc[i] == item) {
+        abc[i].value++;
         break;
       }
     }
-    setAllDataList(allDataList);
+    setAllDataList(abc);
 
-    for (const i in cartItems) {
-      if (cartItems[i].id === item.id) {
-        cartItems[i].value++;
-        break;
-      }
-    }
     AsyncStorage.setItem(
-      "cart", JSON.stringify(cartItems)
+      "cart", JSON.stringify(allDataList)
     );
     };
 
   const onMinusPress = (item) => {
-    for (const i in allDataList) {
-      if (allDataList[i] == item) {
-        allDataList[i].value--;
+    const xyz = [...allDataList];
+    for (const i in xyz) {
+      if (xyz[i] == item) {
+        xyz[i].value--;
         break;
       }
     }
-    setAllDataList(allDataList);
-    for (const i in cartItems) {
-      if (cartItems[i].id === item.id) {
-        cartItems[i].value--;
-        break;
-      }
-    }
+    setAllDataList(xyz);
     AsyncStorage.setItem(
-      "cart", JSON.stringify(cartItems)
+      "cart", JSON.stringify(allDataList)
     );
   };
+
   var flag = 0;
   return (
     <View style={styles.container}>
@@ -208,7 +204,7 @@ const HomeScreen = () => {
               <View style={styles.listTab}>
                 {categoriesData.map((e) => (
                   <>
-                    <TouchableOpacity key={e.id}
+                    <TouchableOpacity key={e.key}
                       style={[
                         styles.categoryItemWrapper,
                         {
@@ -220,7 +216,7 @@ const HomeScreen = () => {
                       onPress={() => {
                         setNewDataList(e.title);
                         setId(e.id);
-                        console.log(e.id);
+                        // console.log(e.id);
                       }}
                     >
                       <Image
@@ -267,8 +263,8 @@ const HomeScreen = () => {
         {/* Food items */}
         <View style={styles.popularWrapper}>
           <Text style={styles.popularTitle}>All</Text>
-          {dataList.map((item) => (
-            <View key={item.id} style={[styles.popularCardWrapper]}>
+          {allDataList.filter((e) => e.title === status).map((item) => (
+            <View key={item.key} style={[styles.popularCardWrapper]}>
               <View style={styles.popularCardLeft}>
                 <Image source={item.image} style={styles.popularCardImage} />
               </View>
@@ -295,7 +291,7 @@ const HomeScreen = () => {
                 </View>
                 { item.value === 0 ? (
                   <TouchableOpacity
-                    key={item.id}
+                    key={item.key}
                     onPress={() => onAddPress(item)}
                   >
                     <View style={styles.popularCardBottom}>
@@ -307,15 +303,14 @@ const HomeScreen = () => {
                 ) : (
                   <View style={styles.popularCardBottom}>
                     <View style={styles.actionBtn}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          onMinusPress(item);
-                        }}
+                      <TouchableOpacity key = {item.key}
+                        onPress={() => 
+                          onMinusPress(item)}
                       >
                         <Icon name="remove" size={25} color={Colors.white} />
                         
                       </TouchableOpacity>
-                      <Text >
+                      <Text>
                         {
                           allDataList[
                             allDataList.findIndex((x) => {
@@ -324,8 +319,8 @@ const HomeScreen = () => {
                           ].value
                         }
                       </Text>
-                      {console.log("hi")}
-                      <TouchableOpacity onPress={() => onPlusPress(item)}>
+                      {/* {console.log("hi")} */}
+                      <TouchableOpacity key = {item.key} onPress={() => onPlusPress(item)}>
                         <Icon name="add" size={25} color={Colors.white} />
                       </TouchableOpacity>
                     </View>

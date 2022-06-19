@@ -14,6 +14,7 @@ import Profile from '../../screens/Profile/profile';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MainContainer from './TabNav';
 import CartScreen from '../../screens/CartScreen/CartScreen';
+import PaymentOptions from '../../screens/PaymentOptions/PaymentOptions';
 const Stack = createNativeStackNavigator();
 const Navigation = (props) => {
     return(
@@ -33,6 +34,7 @@ const Navigation = (props) => {
                 <Stack.Screen name="AdminPortal" component={AdminPortal} />
                 <Stack.Screen name="Profile" component={Profile} />
                 <Stack.Screen name="Cart" component={CartScreen} />
+                <Stack.Screen name="PaymentOptions" component={PaymentOptions} />
                 {/* <Stack.Screen name="Payment" component={Payment} /> */}
             </Stack.Navigator>
         </NavigationContainer>
